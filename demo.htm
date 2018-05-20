@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!--
+  肥客联邦 http://www.FK68.net/
+  ___________    .__ __             __      __            .__       .___
+  \_   _____/___ |__|  | __ ____   /  \    /  \___________|  |    __| _/
+   |    __)/ __ \|  |  |/ // __ \  \   \/\/   /  _ \_  __ \  |   / __ | 
+   |     \\  ___/|  |    <\  ___/   \        (  <_> )  | \/  |__/ /_/ | 
+   \___  / \___  >__|__|_ \\___  >   \__/\  / \____/|__|  |____/\____ | 
+       \/      \/        \/    \/         \/                         \/ 
+
+
+
+                    _ooOoo_
+                   o8888888o
+                   88" . "88
+                   (| -_- |)
+                    O\ = /O
+                ____/`---'\____
+              .   ' \\| |// `.
+               / \\||| : |||// \
+             / _||||| -:- |||||- \
+               | | \\\ - /// | |
+             | \_| ''\---/'' | |
+              \ .-\__ `-` ___/-. /
+           ___`. .' /--.--\ `. . __
+        ."" '< `.___\_<|>_/___.' >'"".
+       | | : `- \`.;`\ _ /`;.`/ - ` : | |
+         \ \ `-. \_ __\ /__ _/ .-` / /
+ ======`-.____`-.___\_____/___.-`____.-'======
+                    `=---='
+
+ .............................................
+          佛祖保佑             永无BUG
+
+-->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no, minimal-ui">
+	<title>jqueryFKRende肥客高性能数据绑定模板渲染引擎 by Feikeq</title>
+  <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script>!window.jQuery && document.write('<script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"><\/script>');</script>
+  <script src="jqueryFKRende.min.js"></script>
+
+
+
+  <style type="text/css">
+    html,body{background: #3d860d;}
+    pre{color: #fff;}
+    .mypage{margin: 0;padding: 0;}
+    .mypage li{font-size: 3em;}
+    a{margin: 5px; color: #fff;}
+  </style>
+
+
+</head>
+<body>
+
+
+<pre>
+
+jqueryFKRende肥客高性能数据绑定模板渲染引擎 
+
+绝大部份模板引擎或数据绑定框架都会指定特定的模板语言，这样会导至模板文件本身遭到破坏，无法直接预览页面本身的内容结构。
+而我现在就是要解决这个问题，以模板文件为导向去制造数据结构，而不是以数据去构造模板逻辑。
+
+
+
+
+怎么使用？
+--------------------------------
+ 为了节省时间我们用jQueryy框架的一些特性去实现这个组件的封装。当然其实也可以用原生JS去封装。
+ 
+
+0.引用库
+  <script src="jqueryFKRende.min.js.js"></script> 
+
+1.渲染指定模板内容 
+  //// 基于banner这个HTML元素指定其相应的JSON数据结构
+  $("#banner").jqueryFKRende(json); // json 指定的数据结构
+
+2.渲染指定模板内子元素内容
+   $("#banner").jqueryFKRende({h1:"标签、ID、CLASS、NAME、子元素"});
+    传入json对象 KEY就相当于对应的:
+      HTML元素
+      ID
+      CLASS
+      NAME
+      为KEY的元素
+    去做设置相应内容。
+    
+
+3.设置模板及子元素属性
+    $("#banner").jqueryFKRende({
+      h2:{
+        title:"修改属性",
+        id:"testid",
+        span:"火"
+      }
+    });
+    //程序会遍历利以上这些KEY，如果没有找到相对应的子元素，那就设置属性。
+
+4.自动循环列表数据渲染模板
+    $("#banner").jqueryFKRende({
+      link:[
+          "废客联邦",
+          "提笔记",
+          "CSGO战队"
+          ]
+    });
+
+    //当然我们还可能要同时设置内容和属性，这种怎么做呢？
+
+    $("#banner").jqueryFKRende({
+    link:[
+          {0:"废客联邦"},
+          {1:"提笔记"},
+          {2:"CSGO战队"}
+          ]
+    });
+
+    第4步中link对象其实可以把数组其实每一项当对象，它默认是都有KEY的，默认 0 1 2 没显示出来。
+
+    
+    //所以这样是和上面那种是一样的，这样我们就可以同时设置属性和内容
+
+    $("#banner").jqueryFKRende({
+    link:{href:"http://www.FK68.net",1:"废客联邦"},
+        {href:"http://www.TiBiJi.com/",2:"提笔记"},
+        {href:"http://cs.FK68.net/",0:"CSGO战队"}
+    });
+
+    在HTML5标准里自定义属性都是要加data前缀的。所以那些不按套路出牌的异类不是我们的用户，排除在外。
+
+ 
+
+
+
+
+</pre>
+
+<a href="javascript:Ajax1();">模拟Ajax加载JSON数据渲染</a>
+<script>
+
+
+var jsonDATA = {
+	//对象的KEY就相当于对应的HTML元素或ID或CLASS或NAME为KEY的元素 如果都没有那就设置属性
+
+		h1:"标签、ID、NAME、CLASS、子元素（<span>span子元素</span>）",
+		h2:{
+				title:"修改属性",  // ID=H2 的H1标签的属性
+				id:"testid",// ID=H2 的H1标签的属性
+				span:"火"   //子元素内容
+			},
+		
+
+		li:[
+			{i:24,b:"第三页",style:"background:#0ac2d2;"},
+		  {i:24,b:{1:"第二页",width:10,style:"color:red;"},style:"background:#7bb7fa"},
+			{i:25,b:{0:"第四4页",width:20},style:"background:#7bb7fa;"},
+			{i:26,b:"第五页",style:"background:#0ac2d2;"},
+			{i:27,b:"第六页",style:"background:#60d7a9;"},
+			{i:29,b:"第八页",style:"background:#fdc162;"},
+			{i:30,b:"第9页",style:"background:#f68dbb;"},
+		],
+		pic:[
+		{src:"https://static.bootcss.com/www/assets/img/vuejs.png"},
+		{src:"https://static.bootcss.com/www/assets/img/jquery-ui-bootstrap.png"},
+		{src:"https://static.bootcss.com/www/assets/img/simpleicons.png"}
+		],
+
+
+		// link:["肥客联邦","提笔记","CSGO战队"]
+		
+		// link:[
+		// 	{0:"肥客联邦"},
+		// 	{1:"提笔记"},
+		// 	{1:"CSGO战队"}
+		// ]
+
+		link:[
+			{0:"肥客联邦",href:"http://www.FK68.net/"},
+			{1:"提笔记",href:"http://www.TiBiJi.com/"},
+			{1:"CSGO战队",href:"http://cs.FK68.net/"}
+		],
+
+		
+
+
+
+
+		};
+
+
+function Ajax1(){
+	$("#banner").jqueryFKRende(jsonDATA);
+ 
+}
+
+
+ 
+</script>
+
+<div id="banner" style="width: 100%; height: 200px; margin:0;padding:0;">
+  <h1>标题1</h1>
+  <div>
+    <img name="pic" src="https://static.bootcss.com/www/assets/img/gruntjs.png" />
+  </div>
+  <h1 id="h2">标题<span>2</span></h1>
+  <p>
+    <a class="link" href="#" target="_blank">链接1</a>
+    <a class="link" href="#" target="_blank">链接2</a>
+    <a class="link" href="#" target="_blank">链接3</a>
+    <a class="link" href="#" target="_blank">链接4</a>
+  </p>
+  <ul class="mypage">
+    <li _style="background:#0ac2d2;"><i>#1</i><b> 内容11</b></li>
+    <li _style="background:#7bb7fa;"><i>#2</i><b> 内容22</b></li>
+    <li _style="background:#60d7a9;"><i>#3</i><b> 内容33</b></li>
+    <li _style="background:#fdc162;"><i>#4</i><b> 内容44</b></li>
+    <li _style="background:#fd6a62;"><i>#5</i><b> 内容55</b></li>
+    <li _style="background:#f68dbb;"><i>^6</i><b> 内容66</b></li>
+  </ul>
+</div>
+ 
+ 
+ 
+ 
+
+<script>
+/**
+* 替换字符串中的字段.
+* @param {String} str 模版字符串
+* @param {Object} o json data
+* @param {RegExp} [regexp] 匹配字符串的正则表达式
+*/
+function substitute(str,o,regexp){
+  return str.replace(regexp || /\\?\{([^{}]+)\}/g, function (match, name) {
+    return (o[name] === undefined) ? '' : o[name];
+  });
+}
+
+var config = {
+data : {value : '123',text:'abc'},
+template : '<label>{text}</label><input type="text" value="{value}"/>'
+};
+
+
+var str = substitute(config.template,config.data);
+//alert(str);
+</script>
+
+</body>
+</html>
